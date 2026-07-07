@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atelier Dining</title>
+    <style>
+      :root {
+        --bg: #f6efe6;
+        --surface: #fffdf9;
+        --text: #221c17;
+        --muted: #6d6259;
+        --accent: #5b775e;
+        --accent-strong: #3f5242;
+        --border: rgba(34, 28, 23, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+      a { color: inherit; text-decoration: none; }
+      img { display: block; width: 100%; }
+      .container { width: min(1160px, calc(100% - 2rem)); margin: 0 auto; }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(255, 253, 249, 0.88);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+      }
+      .brand {
+        font-size: 1.05rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--accent-strong);
+      }
+      .nav-links { display: flex; gap: 1.2rem; font-size: 0.95rem; color: var(--muted); }
+      .hero {
+        min-height: 84vh;
+        display: grid;
+        align-items: center;
+        background: linear-gradient(rgba(0,0,0,0.58), rgba(0,0,0,0.52)),
+                    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=80') center/cover;
+        color: #fff;
+      }
+      .hero-content { padding: 4.5rem 0; max-width: 760px; }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.35em;
+        font-size: 0.82rem;
+        color: #e7cfae;
+        margin-bottom: 0.8rem;
+      }
+      h1, h2, h3 { line-height: 1.15; margin: 0 0 0.9rem; }
+      h1 { font-size: clamp(2.4rem, 5vw, 4.1rem); }
+      .hero p { font-size: 1.06rem; color: rgba(255,255,255,0.84); max-width: 640px; }
+      .buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+      .btn {
+        display: inline-block;
+        padding: 0.9rem 1.25rem;
+        border-radius: 999px;
+        font-weight: 600;
+        transition: transform 180ms ease, background 180ms ease;
+      }
+      .btn:hover { transform: translateY(-2px); }
+      .btn-primary { background: var(--accent); color: white; }
+      .btn-secondary { border: 1px solid rgba(255,255,255,0.3); color: white; }
+      section { padding: 5rem 0; }
+      .section-title { margin-bottom: 1rem; font-size: clamp(1.8rem, 3vw, 2.4rem); }
+      .section-copy { color: var(--muted); max-width: 720px; }
+      .about { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2rem; align-items: center; }
+      .about-card, .menu-card, .testimonial, .reservation-card, .contact-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        box-shadow: 0 18px 45px rgba(0,0,0,0.05);
+      }
+      .about-card { padding: 2rem; }
+      .about img { border-radius: 1.25rem; height: 420px; object-fit: cover; }
+      .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; }
+      .menu-card { padding: 1.25rem; }
+      .menu-card h3 { font-size: 1.1rem; margin-bottom: 0.8rem; }
+      .menu-item { margin-bottom: 0.9rem; }
+      .menu-item strong { display: block; font-size: 0.98rem; }
+      .menu-item span { color: var(--accent); font-weight: 600; }
+      .menu-item p { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.92rem; }
+      .dish-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+      .dish-card { overflow: hidden; }
+      .dish-card img { height: 240px; object-fit: cover; transition: transform 240ms ease; }
+      .dish-card:hover img { transform: scale(1.04); }
+      .dish-card .content { padding: 1rem 1rem 1.2rem; background: var(--surface); }
+      .dish-card .price { color: var(--accent); font-weight: 700; }
+      .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+      .gallery-grid button {
+        background: none; border: 0; padding: 0; cursor: pointer; border-radius: 1rem; overflow: hidden;
+      }
+      .gallery-grid img { height: 220px; object-fit: cover; transition: transform 220ms ease; }
+      .gallery-grid button:hover img { transform: scale(1.04); }
+      .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2rem; }
+      .testimonial { padding: 1.35rem; }
+      .reservation { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 1.5rem; }
+      .reservation-card { padding: 1.5rem; }
+      form { display: grid; gap: 0.9rem; }
+      input, select, button { font: inherit; }
+      input, select {
+        width: 100%; padding: 0.85rem 1rem; border: 1px solid var(--border); border-radius: 999px; background: #fff;
+      }
+      form .row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+      .submit { border: 0; background: var(--accent); color: white; cursor: pointer; }
+      .contact-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 1.5rem; }
+      .contact-card { padding: 1.5rem; }
+      iframe { width: 100%; min-height: 320px; border: 0; border-radius: 1rem; }
+      footer { padding: 2rem 0 2.6rem; color: var(--muted); }
+      .lightbox {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.82); display: none; align-items: center; justify-content: center; z-index: 50; padding: 1rem;
+      }
+      .lightbox.active { display: flex; }
+      .lightbox .panel {
+        background: var(--surface); border-radius: 1rem; padding: 0.75rem; max-width: 900px; width: 100%; position: relative;
+      }
+      .lightbox img { max-height: 80vh; object-fit: contain; border-radius: 0.75rem; }
+      .close-btn {
+        position: absolute; right: 0.8rem; top: 0.8rem; border: 0; width: 2.2rem; height: 2.2rem; border-radius: 999px; background: rgba(0,0,0,0.7); color: white; cursor: pointer;
+      }
+      @media (max-width: 900px) {
+        .menu-grid, .dish-grid, .testimonial-grid, .gallery-grid, .reservation, .contact-grid, .about {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 680px) {
+        .menu-grid, .dish-grid, .testimonial-grid, .gallery-grid, .reservation, .contact-grid, .about, form .row {
+          grid-template-columns: 1fr;
+        }
+        .nav-links { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <a class="brand" href="#home">Atelier</a>
+          <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#menu">Menu</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#reserve">Reserve</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="container hero-content">
+          <p class="eyebrow">Seasonal fine dining</p>
+          <h1>A quietly luxurious evening, crafted with intention.</h1>
+          <p>Discover a refined tasting menu shaped by local ingredients, warm hospitality, and beautifully paced service.</p>
+          <div class="buttons">
+            <a class="btn btn-primary" href="#reserve">Reserve a Table</a>
+            <a class="btn btn-secondary" href="#menu">View Menu</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container about">
+          <div class="about-card">
+            <p class="eyebrow">Our Story</p>
+            <h2 class="section-title">A calm room for memorable evenings.</h2>
+            <p class="section-copy">Atelier began as a neighborhood supper club and grew into a refined destination for thoughtful dining. Our kitchen celebrates seasonality with precision, patience, and a gentle sense of drama.</p>
+          </div>
+          <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=80" alt="Chef plating a dish" />
+        </div>
+      </section>
+
+      <section id="menu">
+        <div class="container">
+          <p class="eyebrow">Featured Menu</p>
+          <h2 class="section-title">A curated menu for every appetite.</h2>
+          <div class="menu-grid">
+            <div class="menu-card">
+              <h3>Main Courses</h3>
+              <div class="menu-item"><strong>Chicken Tikka</strong><span>$18</span><p>Grilled chicken with spices and herbs.</p></div>
+              <div class="menu-item"><strong>Nihari</strong><span>$20</span><p>Slow-cooked rich beef stew.</p></div>
+              <div class="menu-item"><strong>Tacos</strong><span>$16</span><p>Soft tacos with savory fillings.</p></div>
+              <div class="menu-item"><strong>Tacos Fish</strong><span>$18</span><p>Fish tacos with fresh herbs and spice.</p></div>
+              <div class="menu-item"><strong>Kebab</strong><span>$22</span><p>Chargrilled skewers with spice.</p></div>
+            </div>
+            <div class="menu-card">
+              <h3>Desserts</h3>
+              <div class="menu-item"><strong>Cake</strong><span>$13</span><p>Soft layered cake with rich frosting.</p></div>
+              <div class="menu-item"><strong>Pastry</strong><span>$8</span><p>Freshly baked flaky pastry.</p></div>
+              <div class="menu-item"><strong>Chocolate</strong><span>$7</span><p>Decadent chocolate dessert.</p></div>
+              <div class="menu-item"><strong>Chocolate Torte</strong><span>$14</span><p>Sea salt caramel.</p></div>
+            </div>
+            <div class="menu-card">
+              <h3>Drinks</h3>
+              <div class="menu-item"><strong>Chocolate Shake</strong><span>$6</span><p>Rich and creamy chocolate milkshake.</p></div>
+              <div class="menu-item"><strong>Vanilla Shake</strong><span>$6</span><p>Classic vanilla milkshake with a smooth finish.</p></div>
+              <div class="menu-item"><strong>Coca-Cola</strong><span>$3</span><p>Chilled classic soft drink.</p></div>
+              <div class="menu-item"><strong>Negroni</strong><span>$17</span><p>Smoked rosemary finish.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <p class="eyebrow">Signature Dishes</p>
+          <h2 class="section-title">Three plates that define the season.</h2>
+          <div class="dish-grid">
+            <article class="dish-card">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=80" alt="Nihari" />
+              <div class="content"><h3>Nihari <span class="price">$20</span></h3><p>Slow-cooked beef stew with rich spices and deep flavor.</p></div>
+            </article>
+            <article class="dish-card">
+              <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=80" alt="Fish tacos" />
+              <div class="content"><h3>Tacos Fish <span class="price">$18</span></h3><p>Crispy fish tacos with slaw and lime crema.</p></div>
+            </article>
+            <article class="dish-card">
+              <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=900&q=80" alt="Chicken tikka plate" />
+              <div class="content"><h3>Chicken Tikka <span class="price">$18</span></h3><p>Grilled chicken with spices and herbs.</p></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery">
+        <div class="container">
+          <p class="eyebrow">Gallery</p>
+          <h2 class="section-title">Moments of light, texture, and gathering.</h2>
+          <div class="gallery-grid">
+            <button type="button" data-image="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80" alt="Dinner plate" /></button>
+            <button type="button" data-image="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200&q=80"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80" alt="Dining room" /></button>
+            <button type="button" data-image="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Restaurant interior" /></button>
+            <button type="button" data-image="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=80"><img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80" alt="Elegant dessert" /></button>
+            <button type="button" data-image="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Plated food" /></button>
+            <button type="button" data-image="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1200&q=80"><img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80" alt="Warm candlelit table" /></button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <p class="eyebrow">Testimonials</p>
+          <h2 class="section-title">Guests return for the atmosphere and the details.</h2>
+          <div class="testimonial-grid">
+            <div class="testimonial"><p>“Every detail felt intentional, from the service to the final dessert.”</p><strong>— Sufiya</strong></div>
+            <div class="testimonial"><p>“The quiet atmosphere and refined flavors made our anniversary feel effortless.”</p><strong>— Aman Ali</strong></div>
+            <div class="testimonial"><p>“Perfect balance of elegance and comfort. I would book again in a heartbeat.”</p><strong>— Sufiya</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="reserve">
+        <div class="container reservation">
+          <div class="reservation-card">
+            <p class="eyebrow">Reservation</p>
+            <h2 class="section-title">Book your evening with us.</h2>
+            <p class="section-copy">Reserve a table for dinner service Tuesday through Sunday. We recommend booking a week in advance for prime seating.</p>
+          </div>
+          <div class="reservation-card">
+            <form>
+              <div class="row">
+                <input type="text" placeholder="Name" />
+                <input type="email" placeholder="Email" />
+              </div>
+              <div class="row">
+                <input type="tel" placeholder="Phone" />
+                <input type="date" />
+              </div>
+              <div class="row">
+                <input type="time" />
+                <select><option>2 Guests</option><option>4 Guests</option><option>6 Guests</option></select>
+              </div>
+              <button class="btn submit" type="button">Reserve a Table</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container contact-grid">
+          <div class="contact-card">
+            <p class="eyebrow">Location & Hours</p>
+            <h2 class="section-title">Visit us in the old district.</h2>
+            <p>180 St Maryland Street<br />Winnipeg</p>
+            <p>Tue–Sun · 5:30 PM – 11:00 PM</p>
+          </div>
+          <div class="contact-card">
+            <iframe src="https://www.google.com/maps?q=180+St+Maryland+Street+Winnipeg&z=14&output=embed" title="indianrestorant.com location"></iframe>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+      <div class="panel">
+        <button class="close-btn" id="closeLightbox" aria-label="Close preview">×</button>
+        <img id="lightboxImage" src="" alt="Selected gallery image" />
+      </div>
+    </div>
+
+    <footer>
+      <div class="container" style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
+        <div>
+          <strong style="display:block; margin-bottom:0.25rem; color:var(--accent-strong);">indianrestorant.com</strong>
+          usmaniumar375@gmail.com · +1 (203) 899-2362
+        </div>
+        <div>Instagram · Pinterest · Privacy Policy</div>
+      </div>
+    </footer>
+
+    <script>
+      const lightbox = document.getElementById('lightbox');
+      const image = document.getElementById('lightboxImage');
+      const buttons = document.querySelectorAll('[data-image]');
+      const closeButton = document.getElementById('closeLightbox');
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          image.src = button.getAttribute('data-image');
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      closeButton.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeLightbox();
+      });
+    </script>
+  </body>
+</html>
